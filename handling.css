@@ -1,0 +1,57 @@
+// ResourcesPage.jsx (or similar file)
+import React, { useContext } from 'react'; 
+// import { AppContext } from './path-to-context'; // Assuming a context for resources and userRole
+// import StateMessage from './StateMessage'; // Assuming a component for loading/error messages
+
+// Mock context hook for demonstration
+const useAppContext = () => ({
+    getFilteredResources: () => ([{id: 1, name: 'Hotline'}, {id: 2, name: 'Shelters'}]), // Mock function
+    isLoading: false,
+    error: null,
+    userRole: 'victim' // Example user role
+});
+
+// Mock StateMessage component
+const StateMessage = ({ type, message }) => (
+    <div className={`p-4 text-center text-${type === 'error' ? 'red' : 'blue'}-500`}>
+        {type === 'loading' ? 'Loading resources...' : message}
+    </div>
+);
+
+
+const ResourcesPage = () => {
+    // Line 238
+    const { getFilteredResources, isLoading, error, userRole } = useAppContext();
+    const resources = getFilteredResources();
+
+    // Line 241
+    if (isLoading) return <StateMessage type="loading" />;
+    if (error) return <StateMessage type="error" message={error} />;
+
+    // Line 244
+    return (
+        <div className="p-4 md:p-8">
+            <h2 className="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">Resources & Information</h2>
+            
+            {/* Line 247 */}
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                Access comprehensive, role-specific information. You are currently viewing
+                resources as a **{userRole}**.
+            </p>
+
+            {/* Line 250 */}
+            {resources.length === 0 ? (
+                <p className="text-xl text-center text-gray-500 dark:text-gray-500 mt-12 p-8 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl">
+                    No resources found for your current role ({userRole}).
+                </p>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* resources.map((resource) => ( /* ... resource card ... */) */}
+                    <p>Resource cards go here.</p>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default ResourcesPage;
